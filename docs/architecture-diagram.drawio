@@ -1,0 +1,434 @@
+<mxfile host="app.diagrams.net" modified="2026-02-07T12:00:00.000Z" agent="Mozilla/5.0" version="22.0.0" type="device">
+  <diagram name="Sterling to Azure Migration" id="migration-architecture">
+    <mxGraphModel dx="1434" dy="780" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        
+        <!-- Title -->
+        <mxCell id="title" value="Sterling B2B Integrator to Azure Logic Apps Migration Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1;fontColor=#1a365d;" parent="1" vertex="1">
+          <mxGeometry x="400" y="20" width="800" height="40" as="geometry"/>
+        </mxCell>
+        
+        <!-- CURRENT STATE BOX -->
+        <mxCell id="current-state-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;dashed=1;" parent="1" vertex="1">
+          <mxGeometry x="40" y="80" width="520" height="500" as="geometry"/>
+        </mxCell>
+        <mxCell id="current-state-label" value="CURRENT STATE&#xa;IBM Sterling B2B Integrator" style="text;html=1;strokeColor=none;fillColor=#d6b656;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=14;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+          <mxGeometry x="120" y="90" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <!-- Sterling Components -->
+        <!-- On-Premises Data Center -->
+        <mxCell id="datacenter" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" parent="1" vertex="1">
+          <mxGeometry x="60" y="140" width="480" height="420" as="geometry"/>
+        </mxCell>
+        <mxCell id="datacenter-label" value="On-Premises Data Center" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="200" y="145" width="200" height="20" as="geometry"/>
+        </mxCell>
+        
+        <!-- Sterling Server -->
+        <mxCell id="sterling-server" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/VirtualMachine.svg;" parent="1" vertex="1">
+          <mxGeometry x="250" y="180" width="60" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="sterling-server-label" value="Sterling B2B&#xa;Integrator Server" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="225" y="235" width="110" height="30" as="geometry"/>
+        </mxCell>
+        
+        <!-- Sterling Components Box -->
+        <mxCell id="sterling-components" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="80" y="280" width="440" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="sterling-comp-label" value="Sterling Components" style="text;html=1;strokeColor=none;fillColor=#6c8ebf;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+          <mxGeometry x="200" y="285" width="200" height="20" as="geometry"/>
+        </mxCell>
+        
+        <!-- Sterling Translator -->
+        <mxCell id="translator" value="Translator&#xa;(X12/EDIFACT)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a73e8;fontColor=#ffffff;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="90" y="315" width="80" height="50" as="geometry"/>
+        </mxCell>
+        
+        <!-- Sterling Mapper -->
+        <mxCell id="mapper" value="Sterling&#xa;Mapper" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a73e8;fontColor=#ffffff;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="180" y="315" width="80" height="50" as="geometry"/>
+        </mxCell>
+        
+        <!-- Business Process -->
+        <mxCell id="bp" value="Business&#xa;Process" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a73e8;fontColor=#ffffff;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="270" y="315" width="80" height="50" as="geometry"/>
+        </mxCell>
+        
+        <!-- Mailbox -->
+        <mxCell id="mailbox" value="Mailbox&#xa;Service" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a73e8;fontColor=#ffffff;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="360" y="315" width="80" height="50" as="geometry"/>
+        </mxCell>
+        
+        <!-- Adapters -->
+        <mxCell id="adapters" value="Adapters (SFTP, AS2, HTTP)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a73e8;fontColor=#ffffff;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="450" y="315" width="60" height="50" as="geometry"/>
+        </mxCell>
+        
+        <!-- Database -->
+        <mxCell id="sterling-db" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/SQL_Database_Generic.svg;" parent="1" vertex="1">
+          <mxGeometry x="130" y="420" width="44" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="db-label" value="Sterling DB&#xa;(Oracle/DB2)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="107" y="470" width="90" height="30" as="geometry"/>
+        </mxCell>
+        
+        <!-- File System -->
+        <mxCell id="filesystem" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/File.svg;" parent="1" vertex="1">
+          <mxGeometry x="250" y="420" width="40" height="52" as="geometry"/>
+        </mxCell>
+        <mxCell id="fs-label" value="File System&#xa;Storage" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="225" y="472" width="90" height="30" as="geometry"/>
+        </mxCell>
+        
+        <!-- Monitoring -->
+        <mxCell id="monitoring" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/Monitor.svg;" parent="1" vertex="1">
+          <mxGeometry x="380" y="420" width="50" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="mon-label" value="Sterling&#xa;Dashboard" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="360" y="465" width="90" height="30" as="geometry"/>
+        </mxCell>
+        
+        <!-- MIGRATION ARROW -->
+        <mxCell id="migration-arrow" value="" style="shape=flexArrow;endArrow=classic;html=1;strokeWidth=3;fillColor=#d5e8d4;strokeColor=#82b366;width=40;endSize=10;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="580" y="330" as="sourcePoint"/>
+            <mxPoint x="680" y="330" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="migration-label" value="MIGRATE" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontStyle=1;fontColor=#82b366;" parent="1" vertex="1">
+          <mxGeometry x="590" y="290" width="80" height="30" as="geometry"/>
+        </mxCell>
+        
+        <!-- TARGET STATE BOX -->
+        <mxCell id="target-state-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="700" y="80" width="860" height="700" as="geometry"/>
+        </mxCell>
+        <mxCell id="target-state-label" value="TARGET STATE&#xa;Microsoft Azure Cloud" style="text;html=1;strokeColor=none;fillColor=#82b366;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=14;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+          <mxGeometry x="950" y="90" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <!-- Azure Cloud -->
+        <mxCell id="azure-cloud" value="" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#0288d1;" parent="1" vertex="1">
+          <mxGeometry x="720" y="130" width="820" height="630" as="geometry"/>
+        </mxCell>
+        
+        <!-- Azure Logo -->
+        <mxCell id="azure-logo" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/general/Resource_Groups.svg;" parent="1" vertex="1">
+          <mxGeometry x="1085" y="150" width="65" height="61" as="geometry"/>
+        </mxCell>
+        <mxCell id="azure-rg-label" value="Resource Group&#xa;rg-edi-transform-dev" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1047" y="211" width="140" height="30" as="geometry"/>
+        </mxCell>
+        
+        <!-- Integration Account -->
+        <mxCell id="integration-account" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/integration/Integration_Accounts.svg;" parent="1" vertex="1">
+          <mxGeometry x="780" y="260" width="68" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="ia-label" value="Integration Account&#xa;(Standard)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="754" y="320" width="120" height="30" as="geometry"/>
+        </mxCell>
+        
+        <!-- Integration Account Contents -->
+        <mxCell id="ia-contents" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff;strokeColor=#0288d1;strokeWidth=2;dashed=1;" parent="1" vertex="1">
+          <mxGeometry x="750" y="360" width="180" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="ia-contents-label" value="EIP Artifacts" style="text;html=1;strokeColor=none;fillColor=#0288d1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=10;fontStyle=1;fontColor=#fff;" parent="1" vertex="1">
+          <mxGeometry x="790" y="365" width="100" height="20" as="geometry"/>
+        </mxCell>
+        
+        <!-- Schemas -->
+        <mxCell id="schemas" value="X12 Schemas&#xa;837, 835, 270, 271" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#4fc3f7;fontColor=#000;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="765" y="395" width="150" height="35" as="geometry"/>
+        </mxCell>
+        
+        <!-- Maps -->
+        <mxCell id="maps" value="XSLT Maps&#xa;Transformations" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#4fc3f7;fontColor=#000;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="765" y="440" width="150" height="35" as="geometry"/>
+        </mxCell>
+        
+        <!-- Partners -->
+        <mxCell id="partners" value="Trading Partners&#xa;&amp; Agreements" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#4fc3f7;fontColor=#000;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="765" y="485" width="150" height="35" as="geometry"/>
+        </mxCell>
+        
+        <!-- Logic App -->
+        <mxCell id="logic-app" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/integration/Logic_Apps.svg;" parent="1" vertex="1">
+          <mxGeometry x="1050" y="300" width="65" height="65" as="geometry"/>
+        </mxCell>
+        <mxCell id="la-label" value="Logic App&#xa;edi-transform-la-dev" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1010" y="365" width="145" height="30" as="geometry"/>
+        </mxCell>
+        
+        <!-- Logic App Workflow Box -->
+        <mxCell id="workflow-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff;strokeColor=#7b1fa2;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="980" y="400" width="220" height="180" as="geometry"/>
+        </mxCell>
+        <mxCell id="workflow-label" value="Workflow Actions" style="text;html=1;strokeColor=none;fillColor=#7b1fa2;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=10;fontStyle=1;fontColor=#fff;" parent="1" vertex="1">
+          <mxGeometry x="1040" y="405" width="100" height="20" as="geometry"/>
+        </mxCell>
+        
+        <!-- Workflow Steps -->
+        <mxCell id="trigger" value="HTTP Trigger" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;fontColor=#000;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="995" y="435" width="90" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="decode" value="X12 Decode" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;fontColor=#000;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="1095" y="435" width="90" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="transform" value="XSLT Transform" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;fontColor=#000;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="995" y="470" width="90" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="route" value="Route by Type" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;fontColor=#000;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="1095" y="470" width="90" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="response" value="JSON Response" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;fontColor=#000;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="1040" y="505" width="100" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="ack" value="997 Ack" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;fontColor=#000;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="1040" y="540" width="100" height="25" as="geometry"/>
+        </mxCell>
+        
+        <!-- Connection Lines in Workflow -->
+        <mxCell id="wf-arrow1" value="" style="endArrow=classic;html=1;strokeWidth=1;strokeColor=#7b1fa2;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1085" y="447" as="sourcePoint"/>
+            <mxPoint x="1095" y="447" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Azure Storage -->
+        <mxCell id="storage" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/storage/Storage_Accounts.svg;" parent="1" vertex="1">
+          <mxGeometry x="1280" y="260" width="65" height="52" as="geometry"/>
+        </mxCell>
+        <mxCell id="storage-label" value="Blob Storage" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1262" y="312" width="100" height="20" as="geometry"/>
+        </mxCell>
+        
+        <!-- Service Bus -->
+        <mxCell id="servicebus" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/integration/Service_Bus.svg;" parent="1" vertex="1">
+          <mxGeometry x="1280" y="350" width="65" height="62" as="geometry"/>
+        </mxCell>
+        <mxCell id="sb-label" value="Service Bus&#xa;(Message Queue)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1252" y="412" width="120" height="30" as="geometry"/>
+        </mxCell>
+        
+        <!-- Event Hub -->
+        <mxCell id="eventhub" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/analytics/Event_Hubs.svg;" parent="1" vertex="1">
+          <mxGeometry x="1280" y="460" width="65" height="65" as="geometry"/>
+        </mxCell>
+        <mxCell id="eh-label" value="Event Hub&#xa;(Logging)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1262" y="525" width="100" height="30" as="geometry"/>
+        </mxCell>
+        
+        <!-- Key Vault -->
+        <mxCell id="keyvault" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/security/Key_Vaults.svg;" parent="1" vertex="1">
+          <mxGeometry x="1400" y="260" width="56" height="64" as="geometry"/>
+        </mxCell>
+        <mxCell id="kv-label" value="Key Vault&#xa;(Secrets)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1378" y="324" width="100" height="30" as="geometry"/>
+        </mxCell>
+        
+        <!-- Log Analytics -->
+        <mxCell id="loganalytics" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/management_governance/Log_Analytics_Workspaces.svg;" parent="1" vertex="1">
+          <mxGeometry x="1400" y="380" width="65" height="65" as="geometry"/>
+        </mxCell>
+        <mxCell id="la2-label" value="Log Analytics" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1382" y="445" width="100" height="20" as="geometry"/>
+        </mxCell>
+        
+        <!-- App Insights -->
+        <mxCell id="appinsights" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/devops/Application_Insights.svg;" parent="1" vertex="1">
+          <mxGeometry x="1400" y="480" width="60" height="85" as="geometry"/>
+        </mxCell>
+        <mxCell id="ai-label" value="App Insights" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1380" y="565" width="100" height="20" as="geometry"/>
+        </mxCell>
+        
+        <!-- Connection Lines -->
+        <mxCell id="conn1" value="" style="endArrow=classic;startArrow=classic;html=1;strokeWidth=2;strokeColor=#0288d1;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="870" y="290" as="sourcePoint"/>
+            <mxPoint x="1050" y="330" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="conn2" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#0288d1;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1115" y="330" as="sourcePoint"/>
+            <mxPoint x="1280" y="290" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="conn3" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#0288d1;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1115" y="360" as="sourcePoint"/>
+            <mxPoint x="1280" y="380" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="conn4" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#ff9800;dashed=1;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1200" y="490" as="sourcePoint"/>
+            <mxPoint x="1280" y="490" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- External Systems -->
+        <!-- Trading Partners -->
+        <mxCell id="tp-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#ff9800;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="40" y="620" width="200" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="tp-label" value="Trading Partners" style="text;html=1;strokeColor=none;fillColor=#ff9800;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=12;fontStyle=1;fontColor=#fff;" parent="1" vertex="1">
+          <mxGeometry x="70" y="630" width="140" height="25" as="geometry"/>
+        </mxCell>
+        
+        <!-- Partner Icons -->
+        <mxCell id="payer" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/Enterprise.svg;" parent="1" vertex="1">
+          <mxGeometry x="60" y="670" width="48" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="payer-label" value="Payers&#xa;(BCBS, Aetna)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" parent="1" vertex="1">
+          <mxGeometry x="44" y="710" width="80" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="clearinghouse" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/CloudService.svg;" parent="1" vertex="1">
+          <mxGeometry x="135" y="670" width="50" height="42" as="geometry"/>
+        </mxCell>
+        <mxCell id="ch-label" value="Clearing&#xa;Houses" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;" parent="1" vertex="1">
+          <mxGeometry x="120" y="712" width="80" height="30" as="geometry"/>
+        </mxCell>
+        
+        <!-- Internal Systems -->
+        <mxCell id="internal-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#9c27b0;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="280" y="620" width="200" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="internal-label" value="Internal Systems" style="text;html=1;strokeColor=none;fillColor=#9c27b0;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=12;fontStyle=1;fontColor=#fff;" parent="1" vertex="1">
+          <mxGeometry x="310" y="630" width="140" height="25" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="ehr" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/Application.svg;" parent="1" vertex="1">
+          <mxGeometry x="300" y="670" width="50" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="ehr-label" value="EHR/EMR" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="290" y="720" width="70" height="20" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="billing" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/Accounts.svg;" parent="1" vertex="1">
+          <mxGeometry x="390" y="670" width="50" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="billing-label" value="Billing System" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="375" y="720" width="80" height="20" as="geometry"/>
+        </mxCell>
+        
+        <!-- Splunk -->
+        <mxCell id="splunk-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a5d6a7;strokeColor=#4caf50;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="1350" y="620" width="180" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="splunk-label" value="Monitoring (Splunk)" style="text;html=1;strokeColor=none;fillColor=#4caf50;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=12;fontStyle=1;fontColor=#fff;" parent="1" vertex="1">
+          <mxGeometry x="1370" y="630" width="140" height="25" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="splunk-icon" value="SPLUNK" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#000000;fontColor=#7bbd42;fontSize=14;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="1390" y="670" width="100" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="splunk-desc" value="Real-time EDI&#xa;Transaction Monitoring" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="1380" y="715" width="120" height="30" as="geometry"/>
+        </mxCell>
+        
+        <!-- Connection from Event Hub to Splunk -->
+        <mxCell id="splunk-conn" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#4caf50;dashed=1;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1345" y="520" as="sourcePoint"/>
+            <mxPoint x="1440" y="620" as="targetPoint"/>
+            <Array as="points">
+              <mxPoint x="1440" y="520"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="splunk-conn-label" value="Stream Logs" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fontColor=#4caf50;" parent="1" vertex="1">
+          <mxGeometry x="1450" y="560" width="70" height="20" as="geometry"/>
+        </mxCell>
+        
+        <!-- External Connections -->
+        <mxCell id="ext-conn1" value="" style="endArrow=classic;startArrow=classic;html=1;strokeWidth=2;strokeColor=#ff9800;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="140" y="620" as="sourcePoint"/>
+            <mxPoint x="800" y="580" as="targetPoint"/>
+            <Array as="points">
+              <mxPoint x="140" y="600"/>
+              <mxPoint x="600" y="600"/>
+              <mxPoint x="800" y="560"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="ext-conn2" value="" style="endArrow=classic;startArrow=classic;html=1;strokeWidth=2;strokeColor=#9c27b0;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="380" y="620" as="sourcePoint"/>
+            <mxPoint x="1090" y="580" as="targetPoint"/>
+            <Array as="points">
+              <mxPoint x="380" y="590"/>
+              <mxPoint x="1090" y="590"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Legend -->
+        <mxCell id="legend-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fafafa;strokeColor=#9e9e9e;" parent="1" vertex="1">
+          <mxGeometry x="520" y="620" width="280" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend-title" value="Legend" style="text;html=1;strokeColor=none;fillColor=#9e9e9e;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1;fontColor=#fff;" parent="1" vertex="1">
+          <mxGeometry x="610" y="625" width="100" height="20" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="leg1" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;dashed=1;" parent="1" vertex="1">
+          <mxGeometry x="535" y="655" width="20" height="15" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg1-text" value="Current State (Sterling)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="560" y="652" width="120" height="20" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="leg2" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="535" y="680" width="20" height="15" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg2-text" value="Target State (Azure)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="560" y="677" width="120" height="20" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="leg3" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#0288d1;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="535" y="713" as="sourcePoint"/>
+            <mxPoint x="555" y="713" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="leg3-text" value="Azure Service Connection" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="560" y="705" width="130" height="20" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="leg4" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#ff9800;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="535" y="738" as="sourcePoint"/>
+            <mxPoint x="555" y="738" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="leg4-text" value="Trading Partner Connection" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="560" y="730" width="140" height="20" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="leg5" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#4caf50;dashed=1;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="535" y="763" as="sourcePoint"/>
+            <mxPoint x="555" y="763" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="leg5-text" value="Monitoring/Logging" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="560" y="755" width="100" height="20" as="geometry"/>
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
+

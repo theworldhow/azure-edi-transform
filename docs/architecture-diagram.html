@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sterling B2B to Azure Migration Architecture</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(90deg, #1a365d 0%, #2d3748 100%);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        .diagram-container {
+            padding: 40px;
+            background: #f8fafc;
+        }
+        .architecture {
+            display: grid;
+            grid-template-columns: 1fr 120px 2fr;
+            gap: 30px;
+            align-items: start;
+        }
+        .state-box {
+            border-radius: 16px;
+            padding: 24px;
+            position: relative;
+        }
+        .current-state {
+            background: linear-gradient(145deg, #fef3c7 0%, #fde68a 100%);
+            border: 3px dashed #d97706;
+        }
+        .target-state {
+            background: linear-gradient(145deg, #d1fae5 0%, #a7f3d0 100%);
+            border: 3px solid #059669;
+        }
+        .state-label {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #d97706;
+            color: white;
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        .target-state .state-label {
+            background: #059669;
+        }
+        .datacenter {
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .datacenter-title {
+            text-align: center;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .server-icon {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .server-icon svg {
+            width: 80px;
+            height: 80px;
+        }
+        .server-icon p {
+            font-weight: 600;
+            color: #1e40af;
+            margin-top: 8px;
+        }
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .component {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            padding: 12px 8px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 500;
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .component:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 12px -1px rgba(59, 130, 246, 0.4);
+        }
+        .infrastructure {
+            display: flex;
+            justify-content: space-around;
+            padding-top: 15px;
+            border-top: 2px dashed #cbd5e1;
+        }
+        .infra-item {
+            text-align: center;
+        }
+        .infra-item svg {
+            width: 50px;
+            height: 50px;
+        }
+        .infra-item p {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-top: 5px;
+        }
+        .migration-arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+        }
+        .arrow-container {
+            position: relative;
+            width: 100px;
+            height: 60px;
+        }
+        .arrow-body {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 30px;
+            height: 30px;
+            background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+            transform: translateY(-50%);
+            border-radius: 4px 0 0 4px;
+            animation: pulse 2s infinite;
+        }
+        .arrow-head {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 30px solid transparent;
+            border-bottom: 30px solid transparent;
+            border-left: 35px solid #059669;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .migration-text {
+            font-weight: 700;
+            color: #059669;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+        .azure-cloud {
+            background: linear-gradient(145deg, #e0f2fe 0%, #bae6fd 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            padding: 30px;
+            position: relative;
+            min-height: 500px;
+        }
+        .azure-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .azure-header svg {
+            width: 60px;
+            height: 60px;
+        }
+        .azure-header p {
+            font-weight: 600;
+            color: #0369a1;
+            font-size: 0.9rem;
+        }
+        .azure-services {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 1fr;
+            gap: 20px;
+        }
+        .service-group {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .service-group-title {
+            font-weight: 600;
+            color: #0284c7;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e0f2fe;
+        }
+        .azure-service {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            background: #f0f9ff;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .azure-service:hover {
+            transform: translateX(4px);
+            background: #e0f2fe;
+        }
+        .azure-service svg {
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+        }
+        .azure-service span {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #0c4a6e;
+        }
+        .workflow-box {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            border: 2px solid #7c3aed;
+        }
+        .workflow-title {
+            font-weight: 600;
+            color: #7c3aed;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .workflow-step {
+            background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 100%);
+            color: #4c1d95;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+            text-align: center;
+        }
+        .workflow-arrow {
+            text-align: center;
+            color: #7c3aed;
+            font-size: 1.2rem;
+        }
+        .artifacts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .artifact {
+            background: linear-gradient(135deg, #67e8f9 0%, #22d3ee 100%);
+            color: #164e63;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-align: center;
+        }
+        .external-systems {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #e2e8f0;
+        }
+        .external-box {
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+        .trading-partners {
+            background: linear-gradient(145deg, #fed7aa 0%, #fdba74 100%);
+            border: 2px solid #ea580c;
+        }
+        .internal-systems {
+            background: linear-gradient(145deg, #f5d0fe 0%, #e879f9 30%, #f5d0fe 100%);
+            border: 2px solid #a21caf;
+        }
+        .monitoring {
+            background: linear-gradient(145deg, #bbf7d0 0%, #86efac 100%);
+            border: 2px solid #16a34a;
+        }
+        .legend {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+        }
+        .external-box h4 {
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid rgba(0,0,0,0.1);
+        }
+        .trading-partners h4 { color: #c2410c; }
+        .internal-systems h4 { color: #86198f; }
+        .monitoring h4 { color: #15803d; }
+        .legend h4 { color: #475569; }
+        .partner-icons, .system-icons {
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+        }
+        .icon-item {
+            text-align: center;
+        }
+        .icon-item svg {
+            width: 40px;
+            height: 40px;
+        }
+        .icon-item p {
+            font-size: 0.65rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+        .splunk-logo {
+            background: #000;
+            color: #7bbd42;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 0.75rem;
+        }
+        .legend-color {
+            width: 24px;
+            height: 16px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+        .connection-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .footer {
+            background: #1e293b;
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+        }
+        .footer p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+        .editable-note {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 20px 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .editable-note svg {
+            width: 24px;
+            height: 24px;
+            fill: #d97706;
+            flex-shrink: 0;
+        }
+        .editable-note p {
+            font-size: 0.85rem;
+            color: #92400e;
+        }
+        .editable-note strong {
+            color: #78350f;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .architecture {
+                grid-template-columns: 1fr;
+            }
+            .migration-arrow {
+                transform: rotate(90deg);
+                margin: 20px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔄 Sterling B2B Integrator to Azure Migration Architecture</h1>
+            <p>Enterprise EDI Transformation: From On-Premises to Cloud-Native Integration</p>
+        </div>
+        
+        <div class="editable-note">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            <p><strong>Editable Version:</strong> Open <code>architecture-diagram.drawio</code> in <a href="https://app.diagrams.net" target="_blank">diagrams.net</a> or VS Code with Draw.io extension for full editing capabilities with drag-and-drop icons.</p>
+        </div>
+        
+        <div class="diagram-container">
+            <div class="architecture">
+                <!-- Current State: Sterling -->
+                <div class="state-box current-state">
+                    <span class="state-label">⚠️ CURRENT STATE</span>
+                    <div class="datacenter">
+                        <div class="datacenter-title">🏢 On-Premises Data Center</div>
+                        
+                        <div class="server-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#1e40af">
+                                <path d="M4 1h16a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2V3a2 2 0 012-2zm0 8h16a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4a2 2 0 012-2zm0 8h16a2 2 0 012 2v2a2 2 0 01-2 2H4a2 2 0 01-2-2v-2a2 2 0 012-2zm2-14v2h2V3H6zm0 8v2h2v-2H6zm0 8v2h2v-2H6z"/>
+                            </svg>
+                            <p>IBM Sterling B2B<br>Integrator Server</p>
+                        </div>
+                        
+                        <div class="components-grid">
+                            <div class="component">📋 X12/EDIFACT<br>Translator</div>
+                            <div class="component">🔀 Sterling<br>Mapper</div>
+                            <div class="component">⚙️ Business<br>Process</div>
+                            <div class="component">📬 Mailbox<br>Service</div>
+                            <div class="component">🔌 Adapters<br>(SFTP/AS2)</div>
+                            <div class="component">📊 Reporting<br>Module</div>
+                        </div>
+                        
+                        <div class="infrastructure">
+                            <div class="infra-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#64748b">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                                </svg>
+                                <p>Oracle/DB2<br>Database</p>
+                            </div>
+                            <div class="infra-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#64748b">
+                                    <path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"/>
+                                </svg>
+                                <p>File System<br>Storage</p>
+                            </div>
+                            <div class="infra-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#64748b">
+                                    <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM9 7H5v10h4V7zm10 0h-4v10h4V7zm-6 0h-2v10h2V7z"/>
+                                </svg>
+                                <p>Sterling<br>Dashboard</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Migration Arrow -->
+                <div class="migration-arrow">
+                    <div class="arrow-container">
+                        <div class="arrow-body"></div>
+                        <div class="arrow-head"></div>
+                    </div>
+                    <span class="migration-text">MIGRATE →</span>
+                </div>
+                
+                <!-- Target State: Azure -->
+                <div class="state-box target-state">
+                    <span class="state-label">✅ TARGET STATE</span>
+                    <div class="azure-cloud">
+                        <div class="azure-header">
+                            <svg viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M85.343 62.378l-12.33-44.458a3.5 3.5 0 00-3.369-2.542H26.356a3.5 3.5 0 00-3.369 2.542L10.657 62.378a3.5 3.5 0 002.031 4.177l36.456 15.178a3.5 3.5 0 002.712 0l36.456-15.178a3.5 3.5 0 002.031-4.177z" fill="#0089D6"/>
+                                <path d="M85.343 62.378l-12.33-44.458a3.5 3.5 0 00-3.369-2.542H48v66.189l36.312-15.012a3.5 3.5 0 002.031-4.177z" fill="#0050D4"/>
+                            </svg>
+                            <p>Microsoft Azure Cloud<br><strong>rg-edi-transform-dev</strong></p>
+                        </div>
+                        
+                        <div class="azure-services">
+                            <!-- Integration Account -->
+                            <div class="service-group">
+                                <div class="service-group-title">🔗 Integration Account</div>
+                                <div class="azure-service">
+                                    <svg viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M9 0L0 3v12l9 3 9-3V3L9 0z" fill="#0078D4"/>
+                                        <path d="M9 6L3 8v4l6 2 6-2V8L9 6z" fill="#50E6FF"/>
+                                    </svg>
+                                    <span>edi-transform-ia-dev</span>
+                                </div>
+                                <div class="artifacts-grid">
+                                    <div class="artifact">📄 X12-837 Schema</div>
+                                    <div class="artifact">📄 X12-835 Schema</div>
+                                    <div class="artifact">📄 X12-270 Schema</div>
+                                    <div class="artifact">📄 X12-271 Schema</div>
+                                    <div class="artifact">🔄 837-to-JSON</div>
+                                    <div class="artifact">🔄 835-to-JSON</div>
+                                    <div class="artifact">🔄 270-to-JSON</div>
+                                    <div class="artifact">🔄 271-to-JSON</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Logic App -->
+                            <div class="service-group">
+                                <div class="service-group-title">⚡ Logic App Workflow</div>
+                                <div class="azure-service">
+                                    <svg viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                                        <rect fill="#0078D4" width="18" height="18" rx="2"/>
+                                        <path d="M4 5h10M4 9h10M4 13h6" stroke="#fff" stroke-width="1.5"/>
+                                    </svg>
+                                    <span>edi-transform-la-dev</span>
+                                </div>
+                                <div class="workflow-box">
+                                    <div class="workflow-title">Workflow Steps</div>
+                                    <div class="workflow-step">📥 HTTP Trigger (Receive EDI)</div>
+                                    <div class="workflow-arrow">↓</div>
+                                    <div class="workflow-step">🔍 Decode X12 Message</div>
+                                    <div class="workflow-arrow">↓</div>
+                                    <div class="workflow-step">🔀 Route by Transaction Type</div>
+                                    <div class="workflow-arrow">↓</div>
+                                    <div class="workflow-step">🔄 XSLT Transform to JSON</div>
+                                    <div class="workflow-arrow">↓</div>
+                                    <div class="workflow-step">📤 HTTP Response</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Supporting Services -->
+                            <div class="service-group">
+                                <div class="service-group-title">🛠️ Supporting Services</div>
+                                <div class="azure-service">
+                                    <svg viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                                        <rect fill="#0078D4" width="18" height="18" rx="2"/>
+                                        <path d="M3 14V6h12v8H3z" fill="#fff"/>
+                                        <path d="M5 4h8v2H5z" fill="#50E6FF"/>
+                                    </svg>
+                                    <span>Blob Storage</span>
+                                </div>
+                                <div class="azure-service">
+                                    <svg viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                                        <rect fill="#0078D4" width="18" height="18" rx="2"/>
+                                        <circle cx="9" cy="9" r="5" fill="#50E6FF"/>
+                                    </svg>
+                                    <span>Service Bus</span>
+                                </div>
+                                <div class="azure-service">
+                                    <svg viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                                        <rect fill="#68217A" width="18" height="18" rx="2"/>
+                                        <path d="M9 3l6 6-6 6-6-6z" fill="#fff"/>
+                                    </svg>
+                                    <span>Event Hub</span>
+                                </div>
+                                <div class="azure-service">
+                                    <svg viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                                        <rect fill="#FFB900" width="18" height="18" rx="2"/>
+                                        <path d="M9 4l2 4h4l-3 3 1 5-4-2-4 2 1-5-3-3h4z" fill="#fff"/>
+                                    </svg>
+                                    <span>Key Vault (Secrets)</span>
+                                </div>
+                                <div class="azure-service">
+                                    <svg viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                                        <rect fill="#0078D4" width="18" height="18" rx="2"/>
+                                        <path d="M4 10h10v4H4zM4 4h10v4H4z" fill="#50E6FF"/>
+                                    </svg>
+                                    <span>Log Analytics</span>
+                                </div>
+                                <div class="azure-service">
+                                    <svg viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                                        <rect fill="#68217A" width="18" height="18" rx="2"/>
+                                        <circle cx="9" cy="9" r="4" fill="#fff"/>
+                                    </svg>
+                                    <span>Application Insights</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- External Systems -->
+            <div class="external-systems">
+                <!-- Trading Partners -->
+                <div class="external-box trading-partners">
+                    <h4>🤝 Trading Partners</h4>
+                    <div class="partner-icons">
+                        <div class="icon-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#c2410c">
+                                <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+                            </svg>
+                            <p>Insurance<br>Payers</p>
+                        </div>
+                        <div class="icon-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#c2410c">
+                                <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
+                            </svg>
+                            <p>Clearing<br>Houses</p>
+                        </div>
+                        <div class="icon-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#c2410c">
+                                <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+                            </svg>
+                            <p>PBM<br>Networks</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Internal Systems -->
+                <div class="external-box internal-systems">
+                    <h4>🏥 Internal Systems</h4>
+                    <div class="system-icons">
+                        <div class="icon-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#86198f">
+                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14h-2v-4H6v-2h4V7h2v4h4v2h-4v4z"/>
+                            </svg>
+                            <p>EHR/EMR<br>System</p>
+                        </div>
+                        <div class="icon-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#86198f">
+                                <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+                            </svg>
+                            <p>Billing<br>System</p>
+                        </div>
+                        <div class="icon-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#86198f">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                            </svg>
+                            <p>Claims<br>Management</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Monitoring -->
+                <div class="external-box monitoring">
+                    <h4>📊 Monitoring & Observability</h4>
+                    <div class="splunk-logo">SPLUNK></div>
+                    <p style="font-size: 0.75rem; color: #166534;">Real-time EDI Transaction<br>Monitoring & Alerting</p>
+                    <div style="margin-top: 10px; font-size: 0.7rem; color: #15803d;">
+                        ✓ Event Hub Integration<br>
+                        ✓ Log Analytics Export<br>
+                        ✓ Custom Dashboards
+                    </div>
+                </div>
+                
+                <!-- Legend -->
+                <div class="external-box legend">
+                    <h4>📝 Legend</h4>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px dashed #d97706;"></div>
+                        <span>Current State (Sterling)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border: 2px solid #059669;"></div>
+                        <span>Target State (Azure)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #0284c7;"></div>
+                        <span>Azure Services</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ea580c;"></div>
+                        <span>Trading Partners</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #16a34a;"></div>
+                        <span>Monitoring/Logging</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Azure Healthcare EDI Transform | Migration Architecture Diagram | Version 1.0</p>
+            <p style="margin-top: 8px; font-size: 0.75rem;">Generated for Sterling B2B Integrator to Azure Logic Apps Migration Project</p>
+        </div>
+    </div>
+</body>
+</html>
+
