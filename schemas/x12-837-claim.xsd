@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  X12 837 Healthcare Claim Schema
+  ============================================================================
+  ANSI X12 837 Professional/Institutional Healthcare Claim
+  Version: 005010X222A1 (Professional) / 005010X223A2 (Institutional)
+  
+  This schema defines the structure for healthcare claim submissions.
+  Used for submitting claims to payers for reimbursement.
+  ============================================================================
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:x12="http://schemas.microsoft.com/BizTalk/EDI/X12/2006"
+           targetNamespace="http://schemas.microsoft.com/BizTalk/EDI/X12/2006"
+           elementFormDefault="qualified">
+
+  <!-- Root Element: X12 837 Healthcare Claim -->
+  <xs:element name="X12_005010X222A1_837" type="x12:X12_837_Type"/>
+
+  <!-- Main 837 Transaction Type -->
+  <xs:complexType name="X12_837_Type">
+    <xs:sequence>
+      <!-- Transaction Set Header -->
+      <xs:element name="ST" type="x12:ST_Type"/>
+      
+      <!-- Beginning of Hierarchical Transaction -->
+      <xs:element name="BHT" type="x12:BHT_Type"/>
+      
+      <!-- Submitter Name Loop (1000A) -->
+      <xs:element name="Loop1000A" type="x12:Loop1000A_Type"/>
+      
+      <!-- Receiver Name Loop (1000B) -->
+      <xs:element name="Loop1000B" type="x12:Loop1000B_Type"/>
+      
+      <!-- Billing Provider Hierarchical Level (2000A) -->
+      <xs:element name="Loop2000A" type="x12:Loop2000A_Type" maxOccurs="unbounded"/>
+      
+      <!-- Transaction Set Trailer -->
+      <xs:element name="SE" type="x12:SE_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- ST - Transaction Set Header -->
+  <xs:complexType name="ST_Type">
+    <xs:sequence>
+      <xs:element name="ST01" type="xs:string"/>
+      <xs:element name="ST02" type="xs:string"/>
+      <xs:element name="ST03" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- BHT - Beginning of Hierarchical Transaction -->
+  <xs:complexType name="BHT_Type">
+    <xs:sequence>
+      <xs:element name="BHT01" type="xs:string"/>
+      <xs:element name="BHT02" type="xs:string"/>
+      <xs:element name="BHT03" type="xs:string"/>
+      <xs:element name="BHT04" type="xs:string"/>
+      <xs:element name="BHT05" type="xs:string" minOccurs="0"/>
+      <xs:element name="BHT06" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 1000A - Submitter Name -->
+  <xs:complexType name="Loop1000A_Type">
+    <xs:sequence>
+      <xs:element name="NM1" type="x12:NM1_Type"/>
+      <xs:element name="PER" type="x12:PER_Type" minOccurs="0" maxOccurs="2"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 1000B - Receiver Name -->
+  <xs:complexType name="Loop1000B_Type">
+    <xs:sequence>
+      <xs:element name="NM1" type="x12:NM1_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2000A - Billing Provider Hierarchical Level -->
+  <xs:complexType name="Loop2000A_Type">
+    <xs:sequence>
+      <xs:element name="HL" type="x12:HL_Type"/>
+      <xs:element name="PRV" type="x12:PRV_Type" minOccurs="0"/>
+      <xs:element name="Loop2010AA" type="x12:Loop2010AA_Type"/>
+      <xs:element name="Loop2010AB" type="x12:Loop2010AB_Type" minOccurs="0"/>
+      <xs:element name="Loop2000B" type="x12:Loop2000B_Type" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2010AA - Billing Provider Name -->
+  <xs:complexType name="Loop2010AA_Type">
+    <xs:sequence>
+      <xs:element name="NM1" type="x12:NM1_Type"/>
+      <xs:element name="N3" type="x12:N3_Type"/>
+      <xs:element name="N4" type="x12:N4_Type"/>
+      <xs:element name="REF" type="x12:REF_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2010AB - Pay-to Address -->
+  <xs:complexType name="Loop2010AB_Type">
+    <xs:sequence>
+      <xs:element name="NM1" type="x12:NM1_Type"/>
+      <xs:element name="N3" type="x12:N3_Type"/>
+      <xs:element name="N4" type="x12:N4_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2000B - Subscriber Hierarchical Level -->
+  <xs:complexType name="Loop2000B_Type">
+    <xs:sequence>
+      <xs:element name="HL" type="x12:HL_Type"/>
+      <xs:element name="SBR" type="x12:SBR_Type"/>
+      <xs:element name="Loop2010BA" type="x12:Loop2010BA_Type"/>
+      <xs:element name="Loop2010BB" type="x12:Loop2010BB_Type"/>
+      <xs:element name="Loop2300" type="x12:Loop2300_Type" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2010BA - Subscriber Name -->
+  <xs:complexType name="Loop2010BA_Type">
+    <xs:sequence>
+      <xs:element name="NM1" type="x12:NM1_Type"/>
+      <xs:element name="N3" type="x12:N3_Type" minOccurs="0"/>
+      <xs:element name="N4" type="x12:N4_Type" minOccurs="0"/>
+      <xs:element name="DMG" type="x12:DMG_Type" minOccurs="0"/>
+      <xs:element name="REF" type="x12:REF_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2010BB - Payer Name -->
+  <xs:complexType name="Loop2010BB_Type">
+    <xs:sequence>
+      <xs:element name="NM1" type="x12:NM1_Type"/>
+      <xs:element name="N3" type="x12:N3_Type" minOccurs="0"/>
+      <xs:element name="N4" type="x12:N4_Type" minOccurs="0"/>
+      <xs:element name="REF" type="x12:REF_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2300 - Claim Information -->
+  <xs:complexType name="Loop2300_Type">
+    <xs:sequence>
+      <xs:element name="CLM" type="x12:CLM_Type"/>
+      <xs:element name="DTP" type="x12:DTP_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="REF" type="x12:REF_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="HI" type="x12:HI_Type" maxOccurs="unbounded"/>
+      <xs:element name="Loop2310A" type="x12:Loop2310_Type" minOccurs="0"/>
+      <xs:element name="Loop2310B" type="x12:Loop2310_Type" minOccurs="0"/>
+      <xs:element name="Loop2400" type="x12:Loop2400_Type" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2310 - Provider Info -->
+  <xs:complexType name="Loop2310_Type">
+    <xs:sequence>
+      <xs:element name="NM1" type="x12:NM1_Type"/>
+      <xs:element name="REF" type="x12:REF_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2400 - Service Line -->
+  <xs:complexType name="Loop2400_Type">
+    <xs:sequence>
+      <xs:element name="LX" type="x12:LX_Type"/>
+      <xs:element name="SV1" type="x12:SV1_Type" minOccurs="0"/>
+      <xs:element name="SV2" type="x12:SV2_Type" minOccurs="0"/>
+      <xs:element name="DTP" type="x12:DTP_Type" maxOccurs="unbounded"/>
+      <xs:element name="REF" type="x12:REF_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- NM1 - Individual or Organizational Name -->
+  <xs:complexType name="NM1_Type">
+    <xs:sequence>
+      <xs:element name="NM101" type="xs:string"/>
+      <xs:element name="NM102" type="xs:string"/>
+      <xs:element name="NM103" type="xs:string" minOccurs="0"/>
+      <xs:element name="NM104" type="xs:string" minOccurs="0"/>
+      <xs:element name="NM105" type="xs:string" minOccurs="0"/>
+      <xs:element name="NM106" type="xs:string" minOccurs="0"/>
+      <xs:element name="NM107" type="xs:string" minOccurs="0"/>
+      <xs:element name="NM108" type="xs:string" minOccurs="0"/>
+      <xs:element name="NM109" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- N3 - Address Information -->
+  <xs:complexType name="N3_Type">
+    <xs:sequence>
+      <xs:element name="N301" type="xs:string"/>
+      <xs:element name="N302" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- N4 - Geographic Location -->
+  <xs:complexType name="N4_Type">
+    <xs:sequence>
+      <xs:element name="N401" type="xs:string"/>
+      <xs:element name="N402" type="xs:string"/>
+      <xs:element name="N403" type="xs:string"/>
+      <xs:element name="N404" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- PER - Contact Information -->
+  <xs:complexType name="PER_Type">
+    <xs:sequence>
+      <xs:element name="PER01" type="xs:string"/>
+      <xs:element name="PER02" type="xs:string" minOccurs="0"/>
+      <xs:element name="PER03" type="xs:string" minOccurs="0"/>
+      <xs:element name="PER04" type="xs:string" minOccurs="0"/>
+      <xs:element name="PER05" type="xs:string" minOccurs="0"/>
+      <xs:element name="PER06" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- REF - Reference Identification -->
+  <xs:complexType name="REF_Type">
+    <xs:sequence>
+      <xs:element name="REF01" type="xs:string"/>
+      <xs:element name="REF02" type="xs:string"/>
+      <xs:element name="REF03" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- HL - Hierarchical Level -->
+  <xs:complexType name="HL_Type">
+    <xs:sequence>
+      <xs:element name="HL01" type="xs:string"/>
+      <xs:element name="HL02" type="xs:string" minOccurs="0"/>
+      <xs:element name="HL03" type="xs:string"/>
+      <xs:element name="HL04" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- PRV - Provider Information -->
+  <xs:complexType name="PRV_Type">
+    <xs:sequence>
+      <xs:element name="PRV01" type="xs:string"/>
+      <xs:element name="PRV02" type="xs:string"/>
+      <xs:element name="PRV03" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- SBR - Subscriber Information -->
+  <xs:complexType name="SBR_Type">
+    <xs:sequence>
+      <xs:element name="SBR01" type="xs:string"/>
+      <xs:element name="SBR02" type="xs:string" minOccurs="0"/>
+      <xs:element name="SBR03" type="xs:string" minOccurs="0"/>
+      <xs:element name="SBR04" type="xs:string" minOccurs="0"/>
+      <xs:element name="SBR05" type="xs:string" minOccurs="0"/>
+      <xs:element name="SBR09" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- DMG - Demographic Information -->
+  <xs:complexType name="DMG_Type">
+    <xs:sequence>
+      <xs:element name="DMG01" type="xs:string"/>
+      <xs:element name="DMG02" type="xs:string"/>
+      <xs:element name="DMG03" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- CLM - Claim Information -->
+  <xs:complexType name="CLM_Type">
+    <xs:sequence>
+      <xs:element name="CLM01" type="xs:string"/>
+      <xs:element name="CLM02" type="xs:string"/>
+      <xs:element name="CLM05" type="x12:CLM05_Type"/>
+      <xs:element name="CLM06" type="xs:string" minOccurs="0"/>
+      <xs:element name="CLM07" type="xs:string" minOccurs="0"/>
+      <xs:element name="CLM08" type="xs:string" minOccurs="0"/>
+      <xs:element name="CLM09" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- CLM05 - Health Care Service Location -->
+  <xs:complexType name="CLM05_Type">
+    <xs:sequence>
+      <xs:element name="CLM0501" type="xs:string"/>
+      <xs:element name="CLM0502" type="xs:string"/>
+      <xs:element name="CLM0503" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- DTP - Date/Time Period -->
+  <xs:complexType name="DTP_Type">
+    <xs:sequence>
+      <xs:element name="DTP01" type="xs:string"/>
+      <xs:element name="DTP02" type="xs:string"/>
+      <xs:element name="DTP03" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- HI - Health Care Diagnosis Code -->
+  <xs:complexType name="HI_Type">
+    <xs:sequence>
+      <xs:element name="HI01" type="x12:HI_Composite_Type"/>
+      <xs:element name="HI02" type="x12:HI_Composite_Type" minOccurs="0"/>
+      <xs:element name="HI03" type="x12:HI_Composite_Type" minOccurs="0"/>
+      <xs:element name="HI04" type="x12:HI_Composite_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- HI Composite -->
+  <xs:complexType name="HI_Composite_Type">
+    <xs:sequence>
+      <xs:element name="HI0101" type="xs:string"/>
+      <xs:element name="HI0102" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- LX - Service Line Number -->
+  <xs:complexType name="LX_Type">
+    <xs:sequence>
+      <xs:element name="LX01" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- SV1 - Professional Service -->
+  <xs:complexType name="SV1_Type">
+    <xs:sequence>
+      <xs:element name="SV101" type="x12:SV101_Type"/>
+      <xs:element name="SV102" type="xs:string"/>
+      <xs:element name="SV103" type="xs:string"/>
+      <xs:element name="SV104" type="xs:string"/>
+      <xs:element name="SV107" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- SV101 - Composite Medical Procedure -->
+  <xs:complexType name="SV101_Type">
+    <xs:sequence>
+      <xs:element name="SV10101" type="xs:string"/>
+      <xs:element name="SV10102" type="xs:string"/>
+      <xs:element name="SV10103" type="xs:string" minOccurs="0"/>
+      <xs:element name="SV10104" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- SV2 - Institutional Service -->
+  <xs:complexType name="SV2_Type">
+    <xs:sequence>
+      <xs:element name="SV201" type="xs:string"/>
+      <xs:element name="SV202" type="x12:SV202_Type"/>
+      <xs:element name="SV203" type="xs:string"/>
+      <xs:element name="SV204" type="xs:string"/>
+      <xs:element name="SV205" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- SV202 - Composite Medical Procedure -->
+  <xs:complexType name="SV202_Type">
+    <xs:sequence>
+      <xs:element name="SV20201" type="xs:string"/>
+      <xs:element name="SV20202" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- SE - Transaction Set Trailer -->
+  <xs:complexType name="SE_Type">
+    <xs:sequence>
+      <xs:element name="SE01" type="xs:string"/>
+      <xs:element name="SE02" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+

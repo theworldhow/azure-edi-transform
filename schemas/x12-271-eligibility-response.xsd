@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  X12 271 Eligibility, Coverage, or Benefit Information Schema
+  ============================================================================
+  ANSI X12 271 Health Care Eligibility/Benefit Response
+  Version: 005010X279A1
+  
+  This schema defines the structure for eligibility response messages.
+  Returned by payers to confirm coverage and benefit information.
+  ============================================================================
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:x12="http://schemas.microsoft.com/BizTalk/EDI/X12/2006"
+           targetNamespace="http://schemas.microsoft.com/BizTalk/EDI/X12/2006"
+           elementFormDefault="qualified">
+
+  <!-- Root Element: X12 271 Eligibility Response -->
+  <xs:element name="X12_005010X279A1_271" type="x12:X12_271_Type"/>
+
+  <!-- Main 271 Transaction Type -->
+  <xs:complexType name="X12_271_Type">
+    <xs:sequence>
+      <!-- Transaction Set Header -->
+      <xs:element name="ST" type="x12:ST_271_Type"/>
+      
+      <!-- Beginning of Hierarchical Transaction -->
+      <xs:element name="BHT" type="x12:BHT_271_Type"/>
+      
+      <!-- Information Source Level (2000A) -->
+      <xs:element name="Loop2000A" type="x12:Loop2000A_271_Type" maxOccurs="unbounded"/>
+      
+      <!-- Transaction Set Trailer -->
+      <xs:element name="SE" type="x12:SE_271_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- ST - Transaction Set Header -->
+  <xs:complexType name="ST_271_Type">
+    <xs:sequence>
+      <xs:element name="ST01" type="xs:string"/>
+      <xs:element name="ST02" type="xs:string"/>
+      <xs:element name="ST03" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- BHT - Beginning of Hierarchical Transaction -->
+  <xs:complexType name="BHT_271_Type">
+    <xs:sequence>
+      <xs:element name="BHT01" type="xs:string"/>
+      <xs:element name="BHT02" type="xs:string"/>
+      <xs:element name="BHT03" type="xs:string" minOccurs="0"/>
+      <xs:element name="BHT04" type="xs:string"/>
+      <xs:element name="BHT05" type="xs:string" minOccurs="0"/>
+      <xs:element name="BHT06" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2000A - Information Source Level -->
+  <xs:complexType name="Loop2000A_271_Type">
+    <xs:sequence>
+      <xs:element name="HL" type="x12:HL_271_Type"/>
+      <xs:element name="AAA" type="x12:AAA_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="Loop2100A" type="x12:Loop2100A_271_Type"/>
+      <xs:element name="Loop2000B" type="x12:Loop2000B_271_Type" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2100A - Information Source Name -->
+  <xs:complexType name="Loop2100A_271_Type">
+    <xs:sequence>
+      <xs:element name="NM1" type="x12:NM1_271_Type"/>
+      <xs:element name="PER" type="x12:PER_271_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="AAA" type="x12:AAA_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2000B - Information Receiver Level -->
+  <xs:complexType name="Loop2000B_271_Type">
+    <xs:sequence>
+      <xs:element name="HL" type="x12:HL_271_Type"/>
+      <xs:element name="Loop2100B" type="x12:Loop2100B_271_Type"/>
+      <xs:element name="Loop2000C" type="x12:Loop2000C_271_Type" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2100B - Information Receiver Name -->
+  <xs:complexType name="Loop2100B_271_Type">
+    <xs:sequence>
+      <xs:element name="NM1" type="x12:NM1_271_Type"/>
+      <xs:element name="REF" type="x12:REF_271_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="N3" type="x12:N3_271_Type" minOccurs="0"/>
+      <xs:element name="N4" type="x12:N4_271_Type" minOccurs="0"/>
+      <xs:element name="AAA" type="x12:AAA_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2000C - Subscriber Level -->
+  <xs:complexType name="Loop2000C_271_Type">
+    <xs:sequence>
+      <xs:element name="HL" type="x12:HL_271_Type"/>
+      <xs:element name="TRN" type="x12:TRN_271_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="Loop2100C" type="x12:Loop2100C_271_Type"/>
+      <xs:element name="Loop2000D" type="x12:Loop2000D_271_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2100C - Subscriber Name -->
+  <xs:complexType name="Loop2100C_271_Type">
+    <xs:sequence>
+      <xs:element name="NM1" type="x12:NM1_271_Type"/>
+      <xs:element name="REF" type="x12:REF_271_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="N3" type="x12:N3_271_Type" minOccurs="0"/>
+      <xs:element name="N4" type="x12:N4_271_Type" minOccurs="0"/>
+      <xs:element name="AAA" type="x12:AAA_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="DMG" type="x12:DMG_271_Type" minOccurs="0"/>
+      <xs:element name="INS" type="x12:INS_Type" minOccurs="0"/>
+      <xs:element name="DTP" type="x12:DTP_271_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="Loop2110C" type="x12:Loop2110_271_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2000D - Dependent Level -->
+  <xs:complexType name="Loop2000D_271_Type">
+    <xs:sequence>
+      <xs:element name="HL" type="x12:HL_271_Type"/>
+      <xs:element name="TRN" type="x12:TRN_271_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="Loop2100D" type="x12:Loop2100D_271_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2100D - Dependent Name -->
+  <xs:complexType name="Loop2100D_271_Type">
+    <xs:sequence>
+      <xs:element name="NM1" type="x12:NM1_271_Type"/>
+      <xs:element name="REF" type="x12:REF_271_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="N3" type="x12:N3_271_Type" minOccurs="0"/>
+      <xs:element name="N4" type="x12:N4_271_Type" minOccurs="0"/>
+      <xs:element name="AAA" type="x12:AAA_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="DMG" type="x12:DMG_271_Type" minOccurs="0"/>
+      <xs:element name="INS" type="x12:INS_Type" minOccurs="0"/>
+      <xs:element name="DTP" type="x12:DTP_271_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="Loop2110D" type="x12:Loop2110_271_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2110 - Eligibility/Benefit Information -->
+  <xs:complexType name="Loop2110_271_Type">
+    <xs:sequence>
+      <xs:element name="EB" type="x12:EB_Type"/>
+      <xs:element name="HSD" type="x12:HSD_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="REF" type="x12:REF_271_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="DTP" type="x12:DTP_271_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="AAA" type="x12:AAA_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="MSG" type="x12:MSG_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="Loop2115" type="x12:Loop2115_271_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="Loop2120" type="x12:Loop2120_271_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2115 - Procedure Identification -->
+  <xs:complexType name="Loop2115_271_Type">
+    <xs:sequence>
+      <xs:element name="III" type="x12:III_271_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2120 - Benefit Related Entity -->
+  <xs:complexType name="Loop2120_271_Type">
+    <xs:sequence>
+      <xs:element name="NM1" type="x12:NM1_271_Type"/>
+      <xs:element name="N3" type="x12:N3_271_Type" minOccurs="0"/>
+      <xs:element name="N4" type="x12:N4_271_Type" minOccurs="0"/>
+      <xs:element name="PER" type="x12:PER_271_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- HL - Hierarchical Level -->
+  <xs:complexType name="HL_271_Type">
+    <xs:sequence>
+      <xs:element name="HL01" type="xs:string"/>
+      <xs:element name="HL02" type="xs:string" minOccurs="0"/>
+      <xs:element name="HL03" type="xs:string"/>
+      <xs:element name="HL04" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- AAA - Request Validation -->
+  <xs:complexType name="AAA_Type">
+    <xs:sequence>
+      <xs:element name="AAA01" type="xs:string"/>
+      <xs:element name="AAA02" type="xs:string" minOccurs="0"/>
+      <xs:element name="AAA03" type="xs:string"/>
+      <xs:element name="AAA04" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- NM1 - Individual or Organizational Name -->
+  <xs:complexType name="NM1_271_Type">
+    <xs:sequence>
+      <xs:element name="NM101" type="xs:string"/>
+      <xs:element name="NM102" type="xs:string"/>
+      <xs:element name="NM103" type="xs:string" minOccurs="0"/>
+      <xs:element name="NM104" type="xs:string" minOccurs="0"/>
+      <xs:element name="NM105" type="xs:string" minOccurs="0"/>
+      <xs:element name="NM108" type="xs:string" minOccurs="0"/>
+      <xs:element name="NM109" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- PER - Contact Information -->
+  <xs:complexType name="PER_271_Type">
+    <xs:sequence>
+      <xs:element name="PER01" type="xs:string"/>
+      <xs:element name="PER02" type="xs:string" minOccurs="0"/>
+      <xs:element name="PER03" type="xs:string" minOccurs="0"/>
+      <xs:element name="PER04" type="xs:string" minOccurs="0"/>
+      <xs:element name="PER05" type="xs:string" minOccurs="0"/>
+      <xs:element name="PER06" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- REF - Reference Identification -->
+  <xs:complexType name="REF_271_Type">
+    <xs:sequence>
+      <xs:element name="REF01" type="xs:string"/>
+      <xs:element name="REF02" type="xs:string"/>
+      <xs:element name="REF03" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- N3 - Address Information -->
+  <xs:complexType name="N3_271_Type">
+    <xs:sequence>
+      <xs:element name="N301" type="xs:string"/>
+      <xs:element name="N302" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- N4 - Geographic Location -->
+  <xs:complexType name="N4_271_Type">
+    <xs:sequence>
+      <xs:element name="N401" type="xs:string"/>
+      <xs:element name="N402" type="xs:string"/>
+      <xs:element name="N403" type="xs:string"/>
+      <xs:element name="N404" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- TRN - Trace Number -->
+  <xs:complexType name="TRN_271_Type">
+    <xs:sequence>
+      <xs:element name="TRN01" type="xs:string"/>
+      <xs:element name="TRN02" type="xs:string"/>
+      <xs:element name="TRN03" type="xs:string" minOccurs="0"/>
+      <xs:element name="TRN04" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- DMG - Demographic Information -->
+  <xs:complexType name="DMG_271_Type">
+    <xs:sequence>
+      <xs:element name="DMG01" type="xs:string"/>
+      <xs:element name="DMG02" type="xs:string"/>
+      <xs:element name="DMG03" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- INS - Insured Benefit -->
+  <xs:complexType name="INS_Type">
+    <xs:sequence>
+      <xs:element name="INS01" type="xs:string"/>
+      <xs:element name="INS02" type="xs:string"/>
+      <xs:element name="INS03" type="xs:string" minOccurs="0"/>
+      <xs:element name="INS04" type="xs:string" minOccurs="0"/>
+      <xs:element name="INS05" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- DTP - Date/Time Period -->
+  <xs:complexType name="DTP_271_Type">
+    <xs:sequence>
+      <xs:element name="DTP01" type="xs:string"/>
+      <xs:element name="DTP02" type="xs:string"/>
+      <xs:element name="DTP03" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- EB - Eligibility or Benefit Information -->
+  <xs:complexType name="EB_Type">
+    <xs:sequence>
+      <xs:element name="EB01" type="xs:string"/>
+      <xs:element name="EB02" type="xs:string" minOccurs="0"/>
+      <xs:element name="EB03" type="xs:string" minOccurs="0"/>
+      <xs:element name="EB04" type="xs:string" minOccurs="0"/>
+      <xs:element name="EB05" type="xs:string" minOccurs="0"/>
+      <xs:element name="EB06" type="xs:string" minOccurs="0"/>
+      <xs:element name="EB07" type="xs:string" minOccurs="0"/>
+      <xs:element name="EB08" type="xs:string" minOccurs="0"/>
+      <xs:element name="EB09" type="xs:string" minOccurs="0"/>
+      <xs:element name="EB10" type="xs:string" minOccurs="0"/>
+      <xs:element name="EB11" type="xs:string" minOccurs="0"/>
+      <xs:element name="EB12" type="xs:string" minOccurs="0"/>
+      <xs:element name="EB13" type="x12:EB13_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- EB13 - Composite Medical Procedure -->
+  <xs:complexType name="EB13_Type">
+    <xs:sequence>
+      <xs:element name="EB1301" type="xs:string"/>
+      <xs:element name="EB1302" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- HSD - Health Care Services Delivery -->
+  <xs:complexType name="HSD_Type">
+    <xs:sequence>
+      <xs:element name="HSD01" type="xs:string" minOccurs="0"/>
+      <xs:element name="HSD02" type="xs:string" minOccurs="0"/>
+      <xs:element name="HSD03" type="xs:string" minOccurs="0"/>
+      <xs:element name="HSD04" type="xs:string" minOccurs="0"/>
+      <xs:element name="HSD05" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- III - Industry Identification -->
+  <xs:complexType name="III_271_Type">
+    <xs:sequence>
+      <xs:element name="III01" type="xs:string"/>
+      <xs:element name="III02" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- MSG - Message Text -->
+  <xs:complexType name="MSG_Type">
+    <xs:sequence>
+      <xs:element name="MSG01" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- SE - Transaction Set Trailer -->
+  <xs:complexType name="SE_271_Type">
+    <xs:sequence>
+      <xs:element name="SE01" type="xs:string"/>
+      <xs:element name="SE02" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+

@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  X12 270 Eligibility, Coverage, or Benefit Inquiry Schema
+  ============================================================================
+  ANSI X12 270 Health Care Eligibility/Benefit Inquiry
+  Version: 005010X279A1
+  
+  This schema defines the structure for eligibility inquiry requests.
+  Sent to payers to verify patient insurance coverage and benefits.
+  ============================================================================
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:x12="http://schemas.microsoft.com/BizTalk/EDI/X12/2006"
+           targetNamespace="http://schemas.microsoft.com/BizTalk/EDI/X12/2006"
+           elementFormDefault="qualified">
+
+  <!-- Root Element: X12 270 Eligibility Inquiry -->
+  <xs:element name="X12_005010X279A1_270" type="x12:X12_270_Type"/>
+
+  <!-- Main 270 Transaction Type -->
+  <xs:complexType name="X12_270_Type">
+    <xs:sequence>
+      <!-- Transaction Set Header -->
+      <xs:element name="ST" type="x12:ST_270_Type"/>
+      
+      <!-- Beginning of Hierarchical Transaction -->
+      <xs:element name="BHT" type="x12:BHT_270_Type"/>
+      
+      <!-- Information Source Level (2000A) -->
+      <xs:element name="Loop2000A" type="x12:Loop2000A_270_Type" maxOccurs="unbounded"/>
+      
+      <!-- Transaction Set Trailer -->
+      <xs:element name="SE" type="x12:SE_270_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- ST - Transaction Set Header -->
+  <xs:complexType name="ST_270_Type">
+    <xs:sequence>
+      <xs:element name="ST01" type="xs:string"/>
+      <xs:element name="ST02" type="xs:string"/>
+      <xs:element name="ST03" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- BHT - Beginning of Hierarchical Transaction -->
+  <xs:complexType name="BHT_270_Type">
+    <xs:sequence>
+      <xs:element name="BHT01" type="xs:string"/>
+      <xs:element name="BHT02" type="xs:string"/>
+      <xs:element name="BHT03" type="xs:string" minOccurs="0"/>
+      <xs:element name="BHT04" type="xs:string"/>
+      <xs:element name="BHT05" type="xs:string" minOccurs="0"/>
+      <xs:element name="BHT06" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2000A - Information Source Level -->
+  <xs:complexType name="Loop2000A_270_Type">
+    <xs:sequence>
+      <xs:element name="HL" type="x12:HL_270_Type"/>
+      <xs:element name="Loop2100A" type="x12:Loop2100A_270_Type"/>
+      <xs:element name="Loop2000B" type="x12:Loop2000B_270_Type" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2100A - Information Source Name -->
+  <xs:complexType name="Loop2100A_270_Type">
+    <xs:sequence>
+      <xs:element name="NM1" type="x12:NM1_270_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2000B - Information Receiver Level -->
+  <xs:complexType name="Loop2000B_270_Type">
+    <xs:sequence>
+      <xs:element name="HL" type="x12:HL_270_Type"/>
+      <xs:element name="Loop2100B" type="x12:Loop2100B_270_Type"/>
+      <xs:element name="Loop2000C" type="x12:Loop2000C_270_Type" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2100B - Information Receiver Name -->
+  <xs:complexType name="Loop2100B_270_Type">
+    <xs:sequence>
+      <xs:element name="NM1" type="x12:NM1_270_Type"/>
+      <xs:element name="REF" type="x12:REF_270_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="N3" type="x12:N3_270_Type" minOccurs="0"/>
+      <xs:element name="N4" type="x12:N4_270_Type" minOccurs="0"/>
+      <xs:element name="PRV" type="x12:PRV_270_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2000C - Subscriber Level -->
+  <xs:complexType name="Loop2000C_270_Type">
+    <xs:sequence>
+      <xs:element name="HL" type="x12:HL_270_Type"/>
+      <xs:element name="TRN" type="x12:TRN_270_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="Loop2100C" type="x12:Loop2100C_270_Type"/>
+      <xs:element name="Loop2000D" type="x12:Loop2000D_270_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2100C - Subscriber Name -->
+  <xs:complexType name="Loop2100C_270_Type">
+    <xs:sequence>
+      <xs:element name="NM1" type="x12:NM1_270_Type"/>
+      <xs:element name="REF" type="x12:REF_270_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="N3" type="x12:N3_270_Type" minOccurs="0"/>
+      <xs:element name="N4" type="x12:N4_270_Type" minOccurs="0"/>
+      <xs:element name="DMG" type="x12:DMG_270_Type" minOccurs="0"/>
+      <xs:element name="DTP" type="x12:DTP_270_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="Loop2110C" type="x12:Loop2110_270_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2000D - Dependent Level -->
+  <xs:complexType name="Loop2000D_270_Type">
+    <xs:sequence>
+      <xs:element name="HL" type="x12:HL_270_Type"/>
+      <xs:element name="TRN" type="x12:TRN_270_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="Loop2100D" type="x12:Loop2100D_270_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2100D - Dependent Name -->
+  <xs:complexType name="Loop2100D_270_Type">
+    <xs:sequence>
+      <xs:element name="NM1" type="x12:NM1_270_Type"/>
+      <xs:element name="REF" type="x12:REF_270_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="N3" type="x12:N3_270_Type" minOccurs="0"/>
+      <xs:element name="N4" type="x12:N4_270_Type" minOccurs="0"/>
+      <xs:element name="DMG" type="x12:DMG_270_Type" minOccurs="0"/>
+      <xs:element name="DTP" type="x12:DTP_270_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="Loop2110D" type="x12:Loop2110_270_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2110 - Eligibility/Benefit Inquiry -->
+  <xs:complexType name="Loop2110_270_Type">
+    <xs:sequence>
+      <xs:element name="EQ" type="x12:EQ_Type"/>
+      <xs:element name="AMT" type="x12:AMT_270_Type" minOccurs="0"/>
+      <xs:element name="III" type="x12:III_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="REF" type="x12:REF_270_Type" minOccurs="0"/>
+      <xs:element name="DTP" type="x12:DTP_270_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- HL - Hierarchical Level -->
+  <xs:complexType name="HL_270_Type">
+    <xs:sequence>
+      <xs:element name="HL01" type="xs:string"/>
+      <xs:element name="HL02" type="xs:string" minOccurs="0"/>
+      <xs:element name="HL03" type="xs:string"/>
+      <xs:element name="HL04" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- NM1 - Individual or Organizational Name -->
+  <xs:complexType name="NM1_270_Type">
+    <xs:sequence>
+      <xs:element name="NM101" type="xs:string"/>
+      <xs:element name="NM102" type="xs:string"/>
+      <xs:element name="NM103" type="xs:string" minOccurs="0"/>
+      <xs:element name="NM104" type="xs:string" minOccurs="0"/>
+      <xs:element name="NM105" type="xs:string" minOccurs="0"/>
+      <xs:element name="NM108" type="xs:string" minOccurs="0"/>
+      <xs:element name="NM109" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- REF - Reference Identification -->
+  <xs:complexType name="REF_270_Type">
+    <xs:sequence>
+      <xs:element name="REF01" type="xs:string"/>
+      <xs:element name="REF02" type="xs:string"/>
+      <xs:element name="REF03" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- N3 - Address Information -->
+  <xs:complexType name="N3_270_Type">
+    <xs:sequence>
+      <xs:element name="N301" type="xs:string"/>
+      <xs:element name="N302" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- N4 - Geographic Location -->
+  <xs:complexType name="N4_270_Type">
+    <xs:sequence>
+      <xs:element name="N401" type="xs:string"/>
+      <xs:element name="N402" type="xs:string"/>
+      <xs:element name="N403" type="xs:string"/>
+      <xs:element name="N404" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- PRV - Provider Information -->
+  <xs:complexType name="PRV_270_Type">
+    <xs:sequence>
+      <xs:element name="PRV01" type="xs:string"/>
+      <xs:element name="PRV02" type="xs:string"/>
+      <xs:element name="PRV03" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- TRN - Trace Number -->
+  <xs:complexType name="TRN_270_Type">
+    <xs:sequence>
+      <xs:element name="TRN01" type="xs:string"/>
+      <xs:element name="TRN02" type="xs:string"/>
+      <xs:element name="TRN03" type="xs:string" minOccurs="0"/>
+      <xs:element name="TRN04" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- DMG - Demographic Information -->
+  <xs:complexType name="DMG_270_Type">
+    <xs:sequence>
+      <xs:element name="DMG01" type="xs:string"/>
+      <xs:element name="DMG02" type="xs:string"/>
+      <xs:element name="DMG03" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- DTP - Date/Time Period -->
+  <xs:complexType name="DTP_270_Type">
+    <xs:sequence>
+      <xs:element name="DTP01" type="xs:string"/>
+      <xs:element name="DTP02" type="xs:string"/>
+      <xs:element name="DTP03" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- EQ - Eligibility or Benefit Inquiry -->
+  <xs:complexType name="EQ_Type">
+    <xs:sequence>
+      <xs:element name="EQ01" type="xs:string"/>
+      <xs:element name="EQ02" type="x12:EQ02_Type" minOccurs="0"/>
+      <xs:element name="EQ03" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- EQ02 - Composite Medical Procedure -->
+  <xs:complexType name="EQ02_Type">
+    <xs:sequence>
+      <xs:element name="EQ0201" type="xs:string"/>
+      <xs:element name="EQ0202" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- AMT - Monetary Amount -->
+  <xs:complexType name="AMT_270_Type">
+    <xs:sequence>
+      <xs:element name="AMT01" type="xs:string"/>
+      <xs:element name="AMT02" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- III - Industry Identification -->
+  <xs:complexType name="III_Type">
+    <xs:sequence>
+      <xs:element name="III01" type="xs:string"/>
+      <xs:element name="III02" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- SE - Transaction Set Trailer -->
+  <xs:complexType name="SE_270_Type">
+    <xs:sequence>
+      <xs:element name="SE01" type="xs:string"/>
+      <xs:element name="SE02" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+

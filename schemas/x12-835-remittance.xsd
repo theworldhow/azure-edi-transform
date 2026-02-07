@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  X12 835 Healthcare Claim Payment/Advice Schema
+  ============================================================================
+  ANSI X12 835 Health Care Claim Payment/Advice (Remittance)
+  Version: 005010X221A1
+  
+  This schema defines the structure for claim payment/remittance advice.
+  Sent by payers to providers to explain claim adjudication results.
+  ============================================================================
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:x12="http://schemas.microsoft.com/BizTalk/EDI/X12/2006"
+           targetNamespace="http://schemas.microsoft.com/BizTalk/EDI/X12/2006"
+           elementFormDefault="qualified">
+
+  <!-- Root Element: X12 835 Remittance -->
+  <xs:element name="X12_005010X221A1_835" type="x12:X12_835_Type"/>
+
+  <!-- Main 835 Transaction Type -->
+  <xs:complexType name="X12_835_Type">
+    <xs:sequence>
+      <!-- Transaction Set Header -->
+      <xs:element name="ST" type="x12:ST_835_Type"/>
+      
+      <!-- Financial Information -->
+      <xs:element name="BPR" type="x12:BPR_Type"/>
+      
+      <!-- Reassociation Trace Number -->
+      <xs:element name="TRN" type="x12:TRN_Type"/>
+      
+      <!-- Production Date -->
+      <xs:element name="DTM" type="x12:DTM_Type" minOccurs="0"/>
+      
+      <!-- Payer Identification (1000A) -->
+      <xs:element name="Loop1000A" type="x12:Loop1000A_835_Type"/>
+      
+      <!-- Payee Identification (1000B) -->
+      <xs:element name="Loop1000B" type="x12:Loop1000B_835_Type"/>
+      
+      <!-- Header Number (2000) -->
+      <xs:element name="Loop2000" type="x12:Loop2000_835_Type" maxOccurs="unbounded"/>
+      
+      <!-- Provider Adjustment -->
+      <xs:element name="PLB" type="x12:PLB_Type" minOccurs="0" maxOccurs="unbounded"/>
+      
+      <!-- Transaction Set Trailer -->
+      <xs:element name="SE" type="x12:SE_835_Type"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- ST - Transaction Set Header -->
+  <xs:complexType name="ST_835_Type">
+    <xs:sequence>
+      <xs:element name="ST01" type="xs:string"/>
+      <xs:element name="ST02" type="xs:string"/>
+      <xs:element name="ST03" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- BPR - Financial Information -->
+  <xs:complexType name="BPR_Type">
+    <xs:sequence>
+      <xs:element name="BPR01" type="xs:string"/>
+      <xs:element name="BPR02" type="xs:string"/>
+      <xs:element name="BPR03" type="xs:string" minOccurs="0"/>
+      <xs:element name="BPR04" type="xs:string" minOccurs="0"/>
+      <xs:element name="BPR05" type="xs:string" minOccurs="0"/>
+      <xs:element name="BPR06" type="xs:string" minOccurs="0"/>
+      <xs:element name="BPR07" type="xs:string" minOccurs="0"/>
+      <xs:element name="BPR08" type="xs:string" minOccurs="0"/>
+      <xs:element name="BPR09" type="xs:string" minOccurs="0"/>
+      <xs:element name="BPR10" type="xs:string" minOccurs="0"/>
+      <xs:element name="BPR12" type="xs:string" minOccurs="0"/>
+      <xs:element name="BPR13" type="xs:string" minOccurs="0"/>
+      <xs:element name="BPR14" type="xs:string" minOccurs="0"/>
+      <xs:element name="BPR15" type="xs:string" minOccurs="0"/>
+      <xs:element name="BPR16" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- TRN - Reassociation Trace Number -->
+  <xs:complexType name="TRN_Type">
+    <xs:sequence>
+      <xs:element name="TRN01" type="xs:string"/>
+      <xs:element name="TRN02" type="xs:string"/>
+      <xs:element name="TRN03" type="xs:string" minOccurs="0"/>
+      <xs:element name="TRN04" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- DTM - Date/Time Reference -->
+  <xs:complexType name="DTM_Type">
+    <xs:sequence>
+      <xs:element name="DTM01" type="xs:string"/>
+      <xs:element name="DTM02" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 1000A - Payer Identification -->
+  <xs:complexType name="Loop1000A_835_Type">
+    <xs:sequence>
+      <xs:element name="N1" type="x12:N1_835_Type"/>
+      <xs:element name="N3" type="x12:N3_835_Type" minOccurs="0"/>
+      <xs:element name="N4" type="x12:N4_835_Type" minOccurs="0"/>
+      <xs:element name="REF" type="x12:REF_835_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="PER" type="x12:PER_835_Type" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 1000B - Payee Identification -->
+  <xs:complexType name="Loop1000B_835_Type">
+    <xs:sequence>
+      <xs:element name="N1" type="x12:N1_835_Type"/>
+      <xs:element name="N3" type="x12:N3_835_Type" minOccurs="0"/>
+      <xs:element name="N4" type="x12:N4_835_Type" minOccurs="0"/>
+      <xs:element name="REF" type="x12:REF_835_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2000 - Header Number -->
+  <xs:complexType name="Loop2000_835_Type">
+    <xs:sequence>
+      <xs:element name="LX" type="x12:LX_835_Type"/>
+      <xs:element name="TS3" type="x12:TS3_Type" minOccurs="0"/>
+      <xs:element name="TS2" type="x12:TS2_Type" minOccurs="0"/>
+      <xs:element name="Loop2100" type="x12:Loop2100_835_Type" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2100 - Claim Payment Information -->
+  <xs:complexType name="Loop2100_835_Type">
+    <xs:sequence>
+      <xs:element name="CLP" type="x12:CLP_Type"/>
+      <xs:element name="CAS" type="x12:CAS_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="NM1" type="x12:NM1_835_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="MIA" type="x12:MIA_Type" minOccurs="0"/>
+      <xs:element name="MOA" type="x12:MOA_Type" minOccurs="0"/>
+      <xs:element name="REF" type="x12:REF_835_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="DTM" type="x12:DTM_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="Loop2110" type="x12:Loop2110_835_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Loop 2110 - Service Payment Information -->
+  <xs:complexType name="Loop2110_835_Type">
+    <xs:sequence>
+      <xs:element name="SVC" type="x12:SVC_Type"/>
+      <xs:element name="DTM" type="x12:DTM_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="CAS" type="x12:CAS_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="REF" type="x12:REF_835_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="AMT" type="x12:AMT_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="QTY" type="x12:QTY_Type" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="LQ" type="x12:LQ_Type" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- N1 - Name -->
+  <xs:complexType name="N1_835_Type">
+    <xs:sequence>
+      <xs:element name="N101" type="xs:string"/>
+      <xs:element name="N102" type="xs:string" minOccurs="0"/>
+      <xs:element name="N103" type="xs:string" minOccurs="0"/>
+      <xs:element name="N104" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- N3 - Address -->
+  <xs:complexType name="N3_835_Type">
+    <xs:sequence>
+      <xs:element name="N301" type="xs:string"/>
+      <xs:element name="N302" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- N4 - Geographic Location -->
+  <xs:complexType name="N4_835_Type">
+    <xs:sequence>
+      <xs:element name="N401" type="xs:string"/>
+      <xs:element name="N402" type="xs:string"/>
+      <xs:element name="N403" type="xs:string"/>
+      <xs:element name="N404" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- NM1 - Individual or Organizational Name -->
+  <xs:complexType name="NM1_835_Type">
+    <xs:sequence>
+      <xs:element name="NM101" type="xs:string"/>
+      <xs:element name="NM102" type="xs:string"/>
+      <xs:element name="NM103" type="xs:string" minOccurs="0"/>
+      <xs:element name="NM104" type="xs:string" minOccurs="0"/>
+      <xs:element name="NM105" type="xs:string" minOccurs="0"/>
+      <xs:element name="NM108" type="xs:string" minOccurs="0"/>
+      <xs:element name="NM109" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- REF - Reference -->
+  <xs:complexType name="REF_835_Type">
+    <xs:sequence>
+      <xs:element name="REF01" type="xs:string"/>
+      <xs:element name="REF02" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- PER - Contact Information -->
+  <xs:complexType name="PER_835_Type">
+    <xs:sequence>
+      <xs:element name="PER01" type="xs:string"/>
+      <xs:element name="PER02" type="xs:string" minOccurs="0"/>
+      <xs:element name="PER03" type="xs:string" minOccurs="0"/>
+      <xs:element name="PER04" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- LX - Header Number -->
+  <xs:complexType name="LX_835_Type">
+    <xs:sequence>
+      <xs:element name="LX01" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- TS3 - Provider Summary Information -->
+  <xs:complexType name="TS3_Type">
+    <xs:sequence>
+      <xs:element name="TS301" type="xs:string"/>
+      <xs:element name="TS302" type="xs:string"/>
+      <xs:element name="TS303" type="xs:string"/>
+      <xs:element name="TS304" type="xs:string"/>
+      <xs:element name="TS305" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- TS2 - Provider Supplemental Summary -->
+  <xs:complexType name="TS2_Type">
+    <xs:sequence>
+      <xs:element name="TS201" type="xs:string" minOccurs="0"/>
+      <xs:element name="TS202" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- CLP - Claim Level Data -->
+  <xs:complexType name="CLP_Type">
+    <xs:sequence>
+      <xs:element name="CLP01" type="xs:string"/>
+      <xs:element name="CLP02" type="xs:string"/>
+      <xs:element name="CLP03" type="xs:string"/>
+      <xs:element name="CLP04" type="xs:string"/>
+      <xs:element name="CLP05" type="xs:string" minOccurs="0"/>
+      <xs:element name="CLP06" type="xs:string" minOccurs="0"/>
+      <xs:element name="CLP07" type="xs:string" minOccurs="0"/>
+      <xs:element name="CLP08" type="xs:string" minOccurs="0"/>
+      <xs:element name="CLP09" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- CAS - Claim Adjustment -->
+  <xs:complexType name="CAS_Type">
+    <xs:sequence>
+      <xs:element name="CAS01" type="xs:string"/>
+      <xs:element name="CAS02" type="xs:string"/>
+      <xs:element name="CAS03" type="xs:string"/>
+      <xs:element name="CAS04" type="xs:string" minOccurs="0"/>
+      <xs:element name="CAS05" type="xs:string" minOccurs="0"/>
+      <xs:element name="CAS06" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- MIA - Inpatient Adjudication -->
+  <xs:complexType name="MIA_Type">
+    <xs:sequence>
+      <xs:element name="MIA01" type="xs:string"/>
+      <xs:element name="MIA02" type="xs:string" minOccurs="0"/>
+      <xs:element name="MIA03" type="xs:string" minOccurs="0"/>
+      <xs:element name="MIA04" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- MOA - Outpatient Adjudication -->
+  <xs:complexType name="MOA_Type">
+    <xs:sequence>
+      <xs:element name="MOA01" type="xs:string" minOccurs="0"/>
+      <xs:element name="MOA02" type="xs:string" minOccurs="0"/>
+      <xs:element name="MOA03" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- SVC - Service Information -->
+  <xs:complexType name="SVC_Type">
+    <xs:sequence>
+      <xs:element name="SVC01" type="x12:SVC01_Type"/>
+      <xs:element name="SVC02" type="xs:string"/>
+      <xs:element name="SVC03" type="xs:string"/>
+      <xs:element name="SVC04" type="xs:string" minOccurs="0"/>
+      <xs:element name="SVC05" type="xs:string" minOccurs="0"/>
+      <xs:element name="SVC06" type="x12:SVC01_Type" minOccurs="0"/>
+      <xs:element name="SVC07" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- SVC01 - Composite Medical Procedure -->
+  <xs:complexType name="SVC01_Type">
+    <xs:sequence>
+      <xs:element name="SVC0101" type="xs:string"/>
+      <xs:element name="SVC0102" type="xs:string"/>
+      <xs:element name="SVC0103" type="xs:string" minOccurs="0"/>
+      <xs:element name="SVC0104" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- AMT - Monetary Amount -->
+  <xs:complexType name="AMT_Type">
+    <xs:sequence>
+      <xs:element name="AMT01" type="xs:string"/>
+      <xs:element name="AMT02" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- QTY - Quantity -->
+  <xs:complexType name="QTY_Type">
+    <xs:sequence>
+      <xs:element name="QTY01" type="xs:string"/>
+      <xs:element name="QTY02" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- LQ - Industry Code -->
+  <xs:complexType name="LQ_Type">
+    <xs:sequence>
+      <xs:element name="LQ01" type="xs:string"/>
+      <xs:element name="LQ02" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- PLB - Provider Level Adjustment -->
+  <xs:complexType name="PLB_Type">
+    <xs:sequence>
+      <xs:element name="PLB01" type="xs:string"/>
+      <xs:element name="PLB02" type="xs:string"/>
+      <xs:element name="PLB03" type="x12:PLB03_Type"/>
+      <xs:element name="PLB04" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- PLB03 - Adjustment Reason -->
+  <xs:complexType name="PLB03_Type">
+    <xs:sequence>
+      <xs:element name="PLB0301" type="xs:string"/>
+      <xs:element name="PLB0302" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- SE - Transaction Set Trailer -->
+  <xs:complexType name="SE_835_Type">
+    <xs:sequence>
+      <xs:element name="SE01" type="xs:string"/>
+      <xs:element name="SE02" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+

@@ -1,0 +1,26 @@
+# Azure/Bicep
+*.json.lock
+.azure/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Local environment
+.env
+.env.local
+
+# Temporary files
+tmp/
+temp/
+

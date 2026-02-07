@@ -1,0 +1,218 @@
+{
+  "definition": {
+    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "triggers": {
+      "Healthcare_EDI_Received": {
+        "type": "Request",
+        "kind": "Http",
+        "inputs": {
+          "method": "POST",
+          "schema": {}
+        }
+      }
+    },
+    "actions": {
+      "Initialize_Variables": {
+        "type": "InitializeVariable",
+        "inputs": {
+          "variables": [
+            {
+              "name": "messageId",
+              "type": "string",
+              "value": "@{guid()}"
+            }
+          ]
+        },
+        "runAfter": {}
+      },
+      "Get_Transaction_Type": {
+        "type": "Compose",
+        "inputs": "@coalesce(triggerOutputs()?['headers']?['X-Transaction-Type'], '837')",
+        "runAfter": {
+          "Initialize_Variables": [
+            "Succeeded"
+          ]
+        }
+      },
+      "Route_By_Transaction_Type": {
+        "type": "Switch",
+        "expression": "@outputs('Get_Transaction_Type')",
+        "cases": {
+          "837_Claim": {
+            "case": "837",
+            "actions": {
+              "Transform_837": {
+                "type": "Xslt",
+                "inputs": {
+                  "content": "@{triggerBody()}",
+                  "integrationAccount": {
+                    "map": {
+                      "name": "837-to-json"
+                    }
+                  }
+                },
+                "runAfter": {}
+              },
+              "Response_837": {
+                "type": "Response",
+                "kind": "Http",
+                "inputs": {
+                  "statusCode": 200,
+                  "headers": {
+                    "Content-Type": "application/xml",
+                    "X-Message-Id": "@{variables('messageId')}",
+                    "X-Transaction-Type": "837"
+                  },
+                  "body": "@body('Transform_837')"
+                },
+                "runAfter": {
+                  "Transform_837": [
+                    "Succeeded"
+                  ]
+                }
+              }
+            }
+          },
+          "835_Remittance": {
+            "case": "835",
+            "actions": {
+              "Transform_835": {
+                "type": "Xslt",
+                "inputs": {
+                  "content": "@{triggerBody()}",
+                  "integrationAccount": {
+                    "map": {
+                      "name": "835-to-json"
+                    }
+                  }
+                },
+                "runAfter": {}
+              },
+              "Response_835": {
+                "type": "Response",
+                "kind": "Http",
+                "inputs": {
+                  "statusCode": 200,
+                  "headers": {
+                    "Content-Type": "application/xml",
+                    "X-Message-Id": "@{variables('messageId')}",
+                    "X-Transaction-Type": "835"
+                  },
+                  "body": "@body('Transform_835')"
+                },
+                "runAfter": {
+                  "Transform_835": [
+                    "Succeeded"
+                  ]
+                }
+              }
+            }
+          },
+          "270_Eligibility": {
+            "case": "270",
+            "actions": {
+              "Transform_270": {
+                "type": "Xslt",
+                "inputs": {
+                  "content": "@{triggerBody()}",
+                  "integrationAccount": {
+                    "map": {
+                      "name": "270-to-json"
+                    }
+                  }
+                },
+                "runAfter": {}
+              },
+              "Response_270": {
+                "type": "Response",
+                "kind": "Http",
+                "inputs": {
+                  "statusCode": 200,
+                  "headers": {
+                    "Content-Type": "application/xml",
+                    "X-Message-Id": "@{variables('messageId')}",
+                    "X-Transaction-Type": "270"
+                  },
+                  "body": "@body('Transform_270')"
+                },
+                "runAfter": {
+                  "Transform_270": [
+                    "Succeeded"
+                  ]
+                }
+              }
+            }
+          },
+          "271_EligibilityResponse": {
+            "case": "271",
+            "actions": {
+              "Transform_271": {
+                "type": "Xslt",
+                "inputs": {
+                  "content": "@{triggerBody()}",
+                  "integrationAccount": {
+                    "map": {
+                      "name": "271-to-json"
+                    }
+                  }
+                },
+                "runAfter": {}
+              },
+              "Response_271": {
+                "type": "Response",
+                "kind": "Http",
+                "inputs": {
+                  "statusCode": 200,
+                  "headers": {
+                    "Content-Type": "application/xml",
+                    "X-Message-Id": "@{variables('messageId')}",
+                    "X-Transaction-Type": "271"
+                  },
+                  "body": "@body('Transform_271')"
+                },
+                "runAfter": {
+                  "Transform_271": [
+                    "Succeeded"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "default": {
+          "actions": {
+            "Unsupported_Transaction": {
+              "type": "Response",
+              "kind": "Http",
+              "inputs": {
+                "statusCode": 400,
+                "headers": {
+                  "Content-Type": "application/json",
+                  "X-Message-Id": "@{variables('messageId')}"
+                },
+                "body": {
+                  "success": false,
+                  "messageId": "@{variables('messageId')}",
+                  "error": {
+                    "code": "UNSUPPORTED_TRANSACTION",
+                    "message": "Unsupported transaction type. Use header X-Transaction-Type with value: 837, 835, 270, or 271",
+                    "receivedType": "@{outputs('Get_Transaction_Type')}"
+                  }
+                }
+              },
+              "runAfter": {}
+            }
+          }
+        },
+        "runAfter": {
+          "Get_Transaction_Type": [
+            "Succeeded"
+          ]
+        }
+      }
+    },
+    "outputs": {}
+  }
+}
